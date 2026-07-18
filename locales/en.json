@@ -1,0 +1,17 @@
+{
+  "title": "Owntracks",
+  "description": "Keep track of everywhere you've been.",
+  "inputs": {
+    "date": "Date"
+  },
+  "empty": {
+    "records": {
+      "title": "No Records Found",
+      "description": "No location records found for the selected date."
+    },
+    "mapKey": {
+      "title": "Missing Google Map API Key",
+      "description": "A Google Map API key is required for the map to display properly. Please add it to your API key vault under the key \"gcloud\"."
+    }
+  }
+}

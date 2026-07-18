@@ -1,0 +1,17 @@
+{
+  "title": "Owntracks",
+  "description": "Jejaki setiap tempat yang anda pernah kunjungi.",
+  "inputs": {
+    "date": "Tarikh"
+  },
+  "empty": {
+    "records": {
+      "title": "Tiada Rekod Ditemui",
+      "description": "Tiada rekod lokasi ditemui untuk tarikh yang dipilih."
+    },
+    "mapKey": {
+      "title": "Kunci API Google Map Tidak Ditemui",
+      "description": "Kunci API Google Map diperlukan untuk memaparkan peta dengan betul. Sila tambahkannya ke dalam bilik kebal kunci API anda di bawah kunci \"gcloud\"."
+    }
+  }
+}

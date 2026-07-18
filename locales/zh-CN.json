@@ -1,0 +1,17 @@
+{
+  "title": "Owntracks",
+  "description": "记录你去过的每一个地方。",
+  "inputs": {
+    "date": "日期"
+  },
+  "empty": {
+    "records": {
+      "title": "未找到记录",
+      "description": "所选日期没有找到任何位置记录。"
+    },
+    "mapKey": {
+      "title": "缺少 Google 地图 API 密钥",
+      "description": "地图需要 Google 地图 API 密钥才能正常显示。请将其添加到 API 密钥保险库中，密钥名为 \"gcloud\"。"
+    }
+  }
+}
