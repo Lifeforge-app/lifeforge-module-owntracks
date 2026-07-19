@@ -14,26 +14,29 @@
     "build:server": "cd server && vite build"
   },
   "dependencies": {
-    "@vis.gl/react-google-maps": "^1.5.5"
+    "leaflet": "^1.9.4",
+    "recharts": "^2.15.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/leaflet": "^1.9.20"
+  },
   "lifeforge": {
     "icon": "tabler:map-pin",
     "category": "Lifestyle",
     "APIKeyAccess": {
-      "gcloud": {
-        "usage": "To display recorded locations on Google Maps",
-        "required": true
+      "tracestrack": {
+        "usage": "To display Tracestrack topographic map tiles (falls back to standard OSM tiles)",
+        "required": false
       }
     }
   },
   "peerDependencies": {
     "@lifeforge/api": "workspace:*",
-    "@lifeforge/server-utils": "workspace:*",
-    "@lifeforge/pocketbase": "workspace:*",
-    "@lifeforge/localization": "workspace:*",
-    "@lifeforge/ui": "workspace:*",
+    "@lifeforge/configs": "workspace:*",
     "@lifeforge/federation": "workspace:*",
-    "@lifeforge/configs": "workspace:*"
+    "@lifeforge/localization": "workspace:*",
+    "@lifeforge/pocketbase": "workspace:*",
+    "@lifeforge/server-utils": "workspace:*",
+    "@lifeforge/ui": "workspace:*"
   }
 }

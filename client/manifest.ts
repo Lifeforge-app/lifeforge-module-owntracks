@@ -5,8 +5,13 @@ import { createForgeModuleClient } from '@lifeforge/federation'
 import contract from './contract'
 
 const { forgeAPI, ...manifest } = createForgeModuleClient({
+  subsection: [
+    { label: 'Map', icon: 'tabler:map-pin', path: '' },
+    { label: 'Battery', icon: 'tabler:battery', path: 'battery' }
+  ],
   routes: {
-    '/': lazy(() => import('@'))
+    '/': lazy(() => import('@/pages/Map')),
+    '/battery': lazy(() => import('@/pages/Battery'))
   },
   contract
 })

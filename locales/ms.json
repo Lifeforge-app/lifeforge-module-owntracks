@@ -1,17 +1,32 @@
 {
   "title": "Owntracks",
   "description": "Jejaki setiap tempat yang anda pernah kunjungi.",
+  "subsections": {
+    "map": {
+      "title": "Peta",
+      "description": "Lihat lokasi yang direkodkan untuk hari tertentu pada peta."
+    },
+    "battery": {
+      "title": "Bateri",
+      "description": "Lihat bagaimana tahap bateri peranti anda berubah sepanjang hari."
+    }
+  },
   "inputs": {
-    "date": "Tarikh"
+    "date": "Tarikh",
+    "time": "Masa"
+  },
+  "widgets": {
+    "route": {
+      "title": "Laluan"
+    },
+    "altitude": {
+      "title": "Altitud"
+    }
   },
   "empty": {
     "records": {
       "title": "Tiada Rekod Ditemui",
       "description": "Tiada rekod lokasi ditemui untuk tarikh yang dipilih."
-    },
-    "mapKey": {
-      "title": "Kunci API Google Map Tidak Ditemui",
-      "description": "Kunci API Google Map diperlukan untuk memaparkan peta dengan betul. Sila tambahkannya ke dalam bilik kebal kunci API anda di bawah kunci \"gcloud\"."
     }
   }
 }

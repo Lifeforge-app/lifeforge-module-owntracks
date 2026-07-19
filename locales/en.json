@@ -1,17 +1,32 @@
 {
   "title": "Owntracks",
   "description": "Keep track of everywhere you've been.",
+  "subsections": {
+    "map": {
+      "title": "Map",
+      "description": "View your recorded locations for a given day on a map."
+    },
+    "battery": {
+      "title": "Battery",
+      "description": "See how your device's battery level changed throughout the day."
+    }
+  },
   "inputs": {
-    "date": "Date"
+    "date": "Date",
+    "time": "Time"
+  },
+  "widgets": {
+    "route": {
+      "title": "Route"
+    },
+    "altitude": {
+      "title": "Altitude"
+    }
   },
   "empty": {
     "records": {
       "title": "No Records Found",
       "description": "No location records found for the selected date."
-    },
-    "mapKey": {
-      "title": "Missing Google Map API Key",
-      "description": "A Google Map API key is required for the map to display properly. Please add it to your API key vault under the key \"gcloud\"."
     }
   }
 }

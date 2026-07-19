@@ -1,17 +1,32 @@
 {
   "title": "Owntracks",
   "description": "記錄你去過的每一個地方。",
+  "subsections": {
+    "map": {
+      "title": "地圖",
+      "description": "在地圖上查看指定日期記錄的位置。"
+    },
+    "battery": {
+      "title": "電池",
+      "description": "查看裝置電池電量在一天中的變化。"
+    }
+  },
   "inputs": {
-    "date": "日期"
+    "date": "日期",
+    "time": "時間"
+  },
+  "widgets": {
+    "route": {
+      "title": "路線"
+    },
+    "altitude": {
+      "title": "海拔"
+    }
   },
   "empty": {
     "records": {
       "title": "未找到記錄",
       "description": "所選日期沒有找到任何位置記錄。"
-    },
-    "mapKey": {
-      "title": "缺少 Google 地圖 API 金鑰",
-      "description": "地圖需要 Google 地圖 API 金鑰才能正常顯示。請將其新增至 API 金鑰保險庫中，金鑰名為 \"gcloud\"。"
     }
   }
 }
