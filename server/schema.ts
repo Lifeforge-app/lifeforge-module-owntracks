@@ -1,7 +1,8 @@
 import z from 'zod'
+
 import { cleanSchemas } from '@lifeforge/pocketbase'
 
-const schemas = {
+export const schemas = {
   locations: {
     schema: z.object({
       type: z.string(),
