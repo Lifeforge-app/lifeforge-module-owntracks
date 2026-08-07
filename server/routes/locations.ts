@@ -156,6 +156,7 @@ export const track = forge
     noAuth: true,
     description:
       'Receive an OwnTracks message. Location updates are recorded; all other message types are acknowledged and discarded.',
+    rateLimit: false,
     input: {
       body: LocationMessageSchema.omit({
         id: true,

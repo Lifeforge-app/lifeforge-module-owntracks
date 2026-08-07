@@ -104,6 +104,7 @@ function OSMMap({
 
     map.invalidateSize()
     const bounds = polyline.getBounds()
+
     if (bounds.isValid()) {
       if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
         map.setView(bounds.getCenter(), 16)
@@ -116,6 +117,7 @@ function OSMMap({
       if (!mapRef.current) return
       map.invalidateSize()
       const currentBounds = polyline.getBounds()
+
       if (currentBounds.isValid()) {
         if (currentBounds.getNorthEast().equals(currentBounds.getSouthWest())) {
           map.setView(currentBounds.getCenter(), 16)
