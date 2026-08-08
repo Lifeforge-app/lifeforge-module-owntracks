@@ -1,5 +1,26 @@
 export const contract = {
   "locations": {
+    "image": {
+      "method": "get",
+      "description": "Generate a 384px-wide black and white summary strip image with map and telemetry graphs",
+      "noAuth": true,
+      "encrypted": false,
+      "isDownloadable": true,
+      "media": null,
+      "input": {
+        "query": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "output": "custom"
+    },
     "list": {
       "method": "get",
       "description": "Get recorded location coordinates and telemetry for a given date",

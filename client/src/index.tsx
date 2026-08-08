@@ -1,15 +1,21 @@
 import dayjs from 'dayjs'
+import { useState } from 'react'
 
 import {
   Box,
+  ContextMenu,
+  ContextMenuItem,
   DateInput,
   EmptyStateScreen,
   ModuleHeader,
   Scrollbar,
   SliderInput,
   Stack,
-  WithQuery
+  WithQuery,
+  toast
 } from '@lifeforge/ui'
+
+import { forgeAPI } from '@/manifest'
 
 import OSMMap from './components/OSMMap'
 import TelemetryWidget from './components/TelemetryWidget'
@@ -27,9 +33,51 @@ function LocationsMapContent() {
     locationsQuery
   } = useMapPageContext()
 
+  const [downloading, setDownloading] = useState(false)
+
+  async function handleDownloadImage() {
+    setDownloading(true)
+
+    try {
+      const response = await forgeAPI.locations.image.input({ date }).query()
+
+      const blob =
+        response instanceof Blob
+          ? response
+          : new Blob([response as BlobPart], { type: 'image/png' })
+
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `owntracks-${date}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } catch {
+      toast.error('Failed to generate summary image')
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   return (
     <>
-      <ModuleHeader icon="tabler:map-pin" title="Map" />
+      <ModuleHeader
+        icon="tabler:map-pin"
+        title="Map"
+        trailing={
+          <ContextMenu>
+            <ContextMenuItem
+              icon="tabler:download"
+              label="downloadImage"
+              loading={downloading}
+              shouldCloseMenuOnClick={false}
+              onClick={handleDownloadImage}
+            />
+          </ContextMenu>
+        }
+      />
       <Box mb="md">
         <DateInput
           icon="tabler:calendar"

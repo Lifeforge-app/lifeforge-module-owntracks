@@ -1,8 +1,10 @@
 import dayjs from 'dayjs'
+import puppeteer from 'puppeteer-core'
 import z from 'zod'
 
 import forge from '../forge'
 import schema from '../schema'
+import { generateStripHTML } from '../utils/generateStripHTML'
 
 const LocationMessageSchema = schema.locations
 
@@ -10,7 +12,8 @@ export const list = forge
   .query({
     encrypted: false,
     noAuth: true,
-    description: 'Get recorded location coordinates and telemetry for a given date',
+    description:
+      'Get recorded location coordinates and telemetry for a given date',
     input: {
       query: z.object({
         date: z.string()
@@ -40,6 +43,82 @@ export const list = forge
         .execute()
     )
   )
+
+export const image = forge
+  .query({
+    encrypted: false,
+    isDownloadable: true,
+    noAuth: true,
+    description:
+      'Generate a 384px-wide black and white summary strip image with map and telemetry graphs',
+    input: {
+      query: z.object({
+        date: z.string().optional()
+      })
+    },
+    output: 'custom'
+  })
+  .callback(async ({ pb, query: { date }, res }) => {
+    const selectedDate = date || dayjs().format('YYYY-MM-DD')
+
+    const locations = await pb.getFullList
+      .collection('locations')
+      .filter([
+        {
+          field: 'tst',
+          operator: '>=',
+          value: dayjs(selectedDate).startOf('day').unix()
+        },
+        {
+          field: 'tst',
+          operator: '<=',
+          value: dayjs(selectedDate).endOf('day').unix()
+        }
+      ])
+      .sort(['tst'])
+      .execute()
+
+    const html = generateStripHTML({ date: selectedDate, locations })
+
+    const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
+
+    const page = await browser.newPage()
+
+    await page.setViewport({
+      width: 384,
+      height: 800,
+      deviceScaleFactor: 2
+    })
+    await page.setContent(html)
+    await page.evaluate(async () => {
+      await document.fonts.ready
+
+      if (typeof customElements !== 'undefined' && customElements.whenDefined) {
+        await customElements.whenDefined('iconify-icon').catch(() => {})
+      }
+      await new Promise(resolve => setTimeout(resolve, 600))
+    })
+
+    const imageBuffer = await page.screenshot({
+      type: 'png',
+      fullPage: true
+    })
+
+    await browser.close()
+
+    const buffer = Buffer.isBuffer(imageBuffer)
+      ? imageBuffer
+      : Buffer.from(imageBuffer)
+
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+    res.set('Content-Type', 'image/png')
+    res.set('x-lifeforge-downloadable', 'true')
+    res.status(200).end(buffer)
+  })
 
 export const track = forge
   .mutation({

@@ -15,6 +15,9 @@
     "date": "Tarikh",
     "time": "Masa"
   },
+  "buttons": {
+    "downloadImage": "Muat Turun Imej"
+  },
   "widgets": {
     "route": {
       "title": "Laluan"

@@ -15,6 +15,9 @@
     "date": "Date",
     "time": "Time"
   },
+  "buttons": {
+    "downloadImage": "Download Image"
+  },
   "widgets": {
     "route": {
       "title": "Route"
