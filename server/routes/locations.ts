@@ -6,74 +6,18 @@ import schema from '../schema'
 
 const LocationMessageSchema = schema.locations
 
-export const listCoords = forge
+export const list = forge
   .query({
     encrypted: false,
     noAuth: true,
-    description: 'Get recorded location coordinates for a given date',
+    description: 'Get recorded location coordinates and telemetry for a given date',
     input: {
       query: z.object({
         date: z.string()
       })
     },
     output: {
-      OK: z.array(
-        schema.locations.pick({
-          lat: true,
-          lon: true,
-          tst: true
-        })
-      )
-    }
-  })
-  .callback(async ({ pb, query: { date }, response }) =>
-    response.ok(
-      await pb.getFullList
-        .collection('locations')
-        .filter([
-          {
-            field: 'tst',
-            operator: '>=',
-            value: dayjs(date).startOf('day').unix()
-          },
-          {
-            field: 'tst',
-            operator: '<=',
-            value: dayjs(date).endOf('day').unix()
-          },
-          {
-            field: 'acc',
-            operator: '<=',
-            value: 15
-          }
-        ])
-        .sort(['tst'])
-        .fields({
-          lat: true,
-          lon: true,
-          tst: true
-        })
-        .execute()
-    )
-  )
-
-export const listBattery = forge
-  .query({
-    encrypted: false,
-    noAuth: true,
-    description: 'Get recorded battery levels for a given date',
-    input: {
-      query: z.object({
-        date: z.string()
-      })
-    },
-    output: {
-      OK: z.array(
-        schema.locations.pick({
-          batt: true,
-          tst: true
-        })
-      )
+      OK: z.array(schema.locations)
     }
   })
   .callback(async ({ pb, query: { date }, response }) =>
@@ -93,59 +37,6 @@ export const listBattery = forge
           }
         ])
         .sort(['tst'])
-        .fields({
-          batt: true,
-          tst: true
-        })
-        .execute()
-    )
-  )
-
-export const listAltitude = forge
-  .query({
-    encrypted: false,
-    noAuth: true,
-    description: 'Get recorded altitudes for a given date',
-    input: {
-      query: z.object({
-        date: z.string()
-      })
-    },
-    output: {
-      OK: z.array(
-        schema.locations.pick({
-          alt: true,
-          tst: true
-        })
-      )
-    }
-  })
-  .callback(async ({ pb, query: { date }, response }) =>
-    response.ok(
-      await pb.getFullList
-        .collection('locations')
-        .filter([
-          {
-            field: 'tst',
-            operator: '>=',
-            value: dayjs(date).startOf('day').unix()
-          },
-          {
-            field: 'tst',
-            operator: '<=',
-            value: dayjs(date).endOf('day').unix()
-          },
-          {
-            field: 'vac',
-            operator: '>',
-            value: 0
-          }
-        ])
-        .sort(['tst'])
-        .fields({
-          alt: true,
-          tst: true
-        })
         .execute()
     )
   )

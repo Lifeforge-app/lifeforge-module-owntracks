@@ -1,8 +1,8 @@
 export const contract = {
   "locations": {
-    "listAltitude": {
+    "list": {
       "method": "get",
-      "description": "Get recorded altitudes for a given date",
+      "description": "Get recorded location coordinates and telemetry for a given date",
       "noAuth": true,
       "encrypted": false,
       "isDownloadable": false,
@@ -29,110 +29,165 @@ export const contract = {
           "items": {
             "type": "object",
             "properties": {
-              "alt": {
+              "type": {
+                "type": "string"
+              },
+              "message_id": {
+                "type": "string"
+              },
+              "topic": {
+                "type": "string"
+              },
+              "qos": {
                 "type": "number"
               },
-              "tst": {
+              "retained": {
+                "type": "boolean"
+              },
+              "created_at": {
                 "type": "number"
-              }
-            },
-            "required": [
-              "alt",
-              "tst"
-            ],
-            "additionalProperties": false
-          }
-        }
-      }
-    },
-    "listBattery": {
-      "method": "get",
-      "description": "Get recorded battery levels for a given date",
-      "noAuth": true,
-      "encrypted": false,
-      "isDownloadable": false,
-      "media": null,
-      "input": {
-        "query": {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "type": "object",
-          "properties": {
-            "date": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "date"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "output": {
-        "OK": {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
+              },
+              "source": {
+                "type": "string"
+              },
               "batt": {
                 "type": "number"
               },
-              "tst": {
+              "bs": {
                 "type": "number"
-              }
-            },
-            "required": [
-              "batt",
-              "tst"
-            ],
-            "additionalProperties": false
-          }
-        }
-      }
-    },
-    "listCoords": {
-      "method": "get",
-      "description": "Get recorded location coordinates for a given date",
-      "noAuth": true,
-      "encrypted": false,
-      "isDownloadable": false,
-      "media": null,
-      "input": {
-        "query": {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "type": "object",
-          "properties": {
-            "date": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "date"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "output": {
-        "OK": {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
+              },
+              "acc": {
+                "type": "number"
+              },
+              "vac": {
+                "type": "number"
+              },
               "lat": {
                 "type": "number"
               },
               "lon": {
                 "type": "number"
               },
+              "alt": {
+                "type": "number"
+              },
+              "cog": {
+                "type": "number"
+              },
+              "rad": {
+                "type": "number"
+              },
+              "vel": {
+                "type": "number"
+              },
+              "p": {
+                "type": "number"
+              },
+              "t": {
+                "type": "string"
+              },
               "tst": {
                 "type": "number"
+              },
+              "m": {
+                "type": "number"
+              },
+              "conn": {
+                "type": "string"
+              },
+              "poi": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "imagename": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "string"
+              },
+              "inregions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "inrids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "motionactivities": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "bssid": {
+                "type": "string"
+              },
+              "ssid": {
+                "type": "string"
+              },
+              "tid": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string"
+              },
+              "updated": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "collectionId": {
+                "type": "string"
+              },
+              "collectionName": {
+                "type": "string"
               }
             },
             "required": [
+              "type",
+              "message_id",
+              "topic",
+              "qos",
+              "retained",
+              "created_at",
+              "source",
+              "batt",
+              "bs",
+              "acc",
+              "vac",
               "lat",
               "lon",
-              "tst"
+              "alt",
+              "cog",
+              "rad",
+              "vel",
+              "p",
+              "t",
+              "tst",
+              "m",
+              "conn",
+              "poi",
+              "image",
+              "imagename",
+              "tag",
+              "inregions",
+              "inrids",
+              "motionactivities",
+              "bssid",
+              "ssid",
+              "tid",
+              "created",
+              "updated",
+              "id",
+              "collectionId",
+              "collectionName"
             ],
             "additionalProperties": false
           }

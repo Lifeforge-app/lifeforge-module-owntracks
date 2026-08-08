@@ -21,6 +21,27 @@
     },
     "altitude": {
       "title": "Altitud"
+    },
+    "battery": {
+      "title": "Bateri"
+    },
+    "speed": {
+      "title": "Kelajuan"
+    },
+    "accuracy": {
+      "title": "Ketepatan"
+    },
+    "verticalAccuracy": {
+      "title": "Ketepatan Menegak"
+    },
+    "pressure": {
+      "title": "Tekanan"
+    },
+    "heading": {
+      "title": "Arah Haluan"
+    },
+    "radius": {
+      "title": "Jejari"
     }
   },
   "empty": {

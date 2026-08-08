@@ -6,10 +6,10 @@ import { useEffect, useRef } from 'react'
 
 import { Box, Widget, WithQuery, usePersonalization } from '@lifeforge/ui'
 
+import { useMapPageContext } from '@/contexts/MapPageProvider'
 import { forgeAPI } from '@/manifest'
-import { useMapPageContext } from '@/pages/Map/contexts/MapPageProvider'
 
-function OSMMap({ apiKey }: { apiKey: string }) {
+function OSMMapInner({ apiKey }: { apiKey: string }) {
   const { locations, currentLocation } = useMapPageContext()
   const { derivedTheme, derivedThemeColor } = usePersonalization()
   const containerRef = useRef<HTMLDivElement>(null)
@@ -93,35 +93,6 @@ function OSMMap({ apiKey }: { apiKey: string }) {
     ).addTo(map)
 
     polylineRef.current = polyline
-
-    map.invalidateSize()
-    const bounds = polyline.getBounds()
-
-    if (bounds.isValid()) {
-      if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
-        map.setView(bounds.getCenter(), 16)
-      } else {
-        map.fitBounds(bounds, { maxZoom: 16 })
-      }
-    }
-
-    const timer = setTimeout(() => {
-      if (!mapRef.current) return
-      map.invalidateSize()
-      const currentBounds = polyline.getBounds()
-
-      if (currentBounds.isValid()) {
-        if (currentBounds.getNorthEast().equals(currentBounds.getSouthWest())) {
-          map.setView(currentBounds.getCenter(), 16)
-        } else {
-          map.fitBounds(currentBounds, { maxZoom: 16 })
-        }
-      }
-    }, 100)
-
-    return () => {
-      clearTimeout(timer)
-    }
   }, [locations, derivedThemeColor])
 
   useEffect(() => {
@@ -148,12 +119,26 @@ function OSMMap({ apiKey }: { apiKey: string }) {
         iconSize: [0, 0]
       })
     }).addTo(map)
+
+    map.setView([currentLocation.lat, currentLocation.lon], 16)
+
+    const timer = setTimeout(() => {
+      if (!mapRef.current) return
+      map.invalidateSize()
+      map.setView([currentLocation.lat, currentLocation.lon], 16)
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+    }
   }, [currentLocation, derivedThemeColor])
 
   return (
     <Box
       ref={containerRef}
+      aspectRatio="24/9"
       flex="1"
+      flexShrink="0"
       minHeight="0"
       overflow="hidden"
       r="lg"
@@ -163,7 +148,7 @@ function OSMMap({ apiKey }: { apiKey: string }) {
   )
 }
 
-export default function OSMapWithAPIKey() {
+export default function OSMMap() {
   const tracestrackKeyQuery = useQuery(
     forgeAPI.getAPIKeys({ keyId: 'tracestrack' }).queryOptions({ retry: false })
   )
@@ -171,7 +156,7 @@ export default function OSMapWithAPIKey() {
   return (
     <Widget flex="1" icon="tabler:route" minHeight="0" title="Route">
       <WithQuery query={tracestrackKeyQuery} showRetryButton={false}>
-        {apiKey => <OSMMap apiKey={apiKey} />}
+        {apiKey => <OSMMapInner apiKey={apiKey} />}
       </WithQuery>
     </Widget>
   )

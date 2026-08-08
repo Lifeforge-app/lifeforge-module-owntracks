@@ -21,6 +21,27 @@
     },
     "altitude": {
       "title": "Altitude"
+    },
+    "battery": {
+      "title": "Battery"
+    },
+    "speed": {
+      "title": "Speed"
+    },
+    "accuracy": {
+      "title": "Accuracy"
+    },
+    "verticalAccuracy": {
+      "title": "Vertical Accuracy"
+    },
+    "pressure": {
+      "title": "Pressure"
+    },
+    "heading": {
+      "title": "Heading"
+    },
+    "radius": {
+      "title": "Radius"
     }
   },
   "empty": {

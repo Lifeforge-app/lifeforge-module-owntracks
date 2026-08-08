@@ -1,16 +1,16 @@
 import { type UseQueryResult, useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import { createContext, useContext, useMemo, useState } from 'react'
 
 import { type InferOutput } from '@lifeforge/api'
 
+import useFilter from '@/hooks/useFilter'
 import { forgeAPI } from '@/manifest'
 
-type LocationRecord = InferOutput<typeof forgeAPI.locations.listCoords>[number]
+type LocationRecord = InferOutput<typeof forgeAPI.locations.list>[number]
 
 interface IMapPageData {
-  selectedDate: Date | null
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>
+  date: string
+  updateFilter: ReturnType<typeof useFilter>['updateFilter']
   selectedTime: number
   setSelectedTime: React.Dispatch<React.SetStateAction<number>>
   sliderValue: number
@@ -24,15 +24,15 @@ interface IMapPageData {
 export const MapPageContext = createContext<IMapPageData | undefined>(undefined)
 
 export function MapPageProvider({ children }: { children: React.ReactNode }) {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date())
+  const { date, updateFilter } = useFilter()
   const [selectedTime, setSelectedTime] = useState(0)
 
   const locationsQuery = useQuery(
-    forgeAPI.locations.listCoords
+    forgeAPI.locations.list
       .input({
-        date: dayjs(selectedDate ?? undefined).format('YYYY-MM-DD')
+        date
       })
-      .queryOptions({ enabled: selectedDate !== null, refetchInterval: 30000 })
+      .queryOptions({ enabled: !!date, refetchInterval: 30000 })
   )
 
   const locations = locationsQuery.data ?? []
@@ -56,8 +56,8 @@ export function MapPageProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(
     () => ({
-      selectedDate,
-      setSelectedDate,
+      date,
+      updateFilter,
       selectedTime,
       setSelectedTime,
       sliderValue,
@@ -68,7 +68,8 @@ export function MapPageProvider({ children }: { children: React.ReactNode }) {
       locationsQuery
     }),
     [
-      selectedDate,
+      date,
+      updateFilter,
       selectedTime,
       sliderValue,
       minTst,

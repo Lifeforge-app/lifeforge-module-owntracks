@@ -21,6 +21,27 @@
     },
     "altitude": {
       "title": "海拔"
+    },
+    "battery": {
+      "title": "电池"
+    },
+    "speed": {
+      "title": "速度"
+    },
+    "accuracy": {
+      "title": "精度"
+    },
+    "verticalAccuracy": {
+      "title": "垂直精度"
+    },
+    "pressure": {
+      "title": "气压"
+    },
+    "heading": {
+      "title": "航向"
+    },
+    "radius": {
+      "title": "半径"
     }
   },
   "empty": {
