@@ -93,6 +93,18 @@ function OSMMapInner({ apiKey }: { apiKey: string }) {
     ).addTo(map)
 
     polylineRef.current = polyline
+
+    map.setView([locations[0].lat, locations[0].lon], 16)
+
+    const timer = setTimeout(() => {
+      if (!mapRef.current) return
+      map.invalidateSize()
+      map.setView([locations[0].lat, locations[0].lon], 16)
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+    }
   }, [locations, derivedThemeColor])
 
   useEffect(() => {
@@ -119,18 +131,6 @@ function OSMMapInner({ apiKey }: { apiKey: string }) {
         iconSize: [0, 0]
       })
     }).addTo(map)
-
-    map.setView([currentLocation.lat, currentLocation.lon], 16)
-
-    const timer = setTimeout(() => {
-      if (!mapRef.current) return
-      map.invalidateSize()
-      map.setView([currentLocation.lat, currentLocation.lon], 16)
-    }, 100)
-
-    return () => {
-      clearTimeout(timer)
-    }
   }, [currentLocation, derivedThemeColor])
 
   return (
