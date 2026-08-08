@@ -122,51 +122,17 @@ function LocationsMapContent() {
                     unit="m"
                   />
                   <TelemetryWidget
-                    dataKey="batt"
-                    domain={[0, 100]}
-                    icon="tabler:battery"
-                    title="Battery"
-                    unit="%"
-                  />
-                  <TelemetryWidget
                     dataKey="vel"
                     icon="tabler:gauge"
                     title="Speed"
                     unit="km/h"
                   />
                   <TelemetryWidget
-                    dataKey="acc"
-                    icon="tabler:target"
-                    title="Accuracy"
-                    unit="m"
-                  />
-                  <TelemetryWidget
-                    dataKey="vac"
-                    filterPredicate={val => val > 0}
-                    icon="tabler:ruler-measure"
-                    title="Vertical Accuracy"
-                    unit="m"
-                  />
-                  <TelemetryWidget
-                    dataKey="p"
-                    filterPredicate={val => val > 0}
-                    icon="tabler:gauge-filled"
-                    title="Pressure"
-                    unit="kPa"
-                  />
-                  <TelemetryWidget
-                    dataKey="cog"
-                    domain={[0, 360]}
-                    icon="tabler:compass"
-                    title="Heading"
-                    unit="°"
-                  />
-                  <TelemetryWidget
-                    dataKey="rad"
-                    filterPredicate={val => val > 0}
-                    icon="tabler:circle-dashed"
-                    title="Radius"
-                    unit="m"
+                    dataKey="batt"
+                    domain={[0, 100]}
+                    icon="tabler:battery"
+                    title="Battery"
+                    unit="%"
                   />
                 </Stack>
               </Scrollbar>

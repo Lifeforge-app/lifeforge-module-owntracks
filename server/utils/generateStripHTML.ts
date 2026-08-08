@@ -112,24 +112,24 @@ export function generateStripHTML({
           }
         </style>
       </head>
-      <body class="flex p-4 text-zinc-900 flex-col w-[384px] border-2 border-black bg-white">
-        <header class="border-b-2 border-zinc-800 pb-2 mb-1 w-full flex flex-col gap-1">
+      <body class="flex p-4 text-black flex-col w-[384px] border-2 border-black bg-white box-border">
+        <header class="border-b-2 border-black pb-2 mb-1 w-full flex flex-col gap-1">
           <div class="flex items-center gap-2">
             <iconify-icon icon="tabler:map-pin" width="24" height="24" class="text-black"></iconify-icon>
             <h1 class="text-lg font-semibold tracking-wide">OwnTracks Statistics</h1>
           </div>
-          <div class="flex items-center justify-end tracking-wider font-medium text-xs gap-1 text-zinc-500">
+          <div class="flex items-center justify-end tracking-wider font-medium text-xs gap-1 text-black">
             <span>powered by</span>
             <iconify-icon icon="tabler:hammer" width="16" height="16" class="text-black"></iconify-icon>
-            <span class="text-zinc-800">Lifeforge<span class="text-black">.</span></span>
+            <span class="text-black font-semibold">Lifeforge<span>.</span></span>
           </div>
         </header>
-        <div class="flex-1 w-full space-y-2 mt-4 text-center p-6">
+        <div class="flex-1 w-full space-y-2 mt-4 text-center p-6 border-2 border-black rounded-sm bg-white">
           <p class="text-sm font-semibold">${formattedDate}</p>
-          <p class="text-zinc-500 text-xs mt-2 italic">No location records found for this date.</p>
+          <p class="text-black text-xs mt-2 italic">No location records found for this date.</p>
         </div>
-        <div class="border-t-2 mt-4 border-zinc-800 flex items-center justify-center p-2 text-xs">
-          <p class="text-zinc-500">[Computer Generated Report]</p>
+        <div class="border-t-2 mt-4 border-black flex items-center justify-center p-2 text-xs">
+          <p class="text-black font-medium">[Computer Generated Report]</p>
         </div>
       </body>
       </html>
@@ -156,16 +156,6 @@ export function generateStripHTML({
         .map(l => ({ tst: l.tst, value: l.alt as number }))
     }),
     buildChartConfig({
-      id: 'batt',
-      title: 'Battery',
-      unit: '%',
-      icon: 'tabler:battery',
-      points: locations
-        .filter(l => typeof l.batt === 'number')
-        .map(l => ({ tst: l.tst, value: l.batt as number })),
-      fixedDomain: [0, 100]
-    }),
-    buildChartConfig({
       id: 'vel',
       title: 'Speed',
       unit: 'km/h',
@@ -175,50 +165,14 @@ export function generateStripHTML({
         .map(l => ({ tst: l.tst, value: l.vel as number }))
     }),
     buildChartConfig({
-      id: 'acc',
-      title: 'Accuracy',
-      unit: 'm',
-      icon: 'tabler:target',
+      id: 'batt',
+      title: 'Battery',
+      unit: '%',
+      icon: 'tabler:battery',
       points: locations
-        .filter(l => typeof l.acc === 'number')
-        .map(l => ({ tst: l.tst, value: l.acc as number }))
-    }),
-    buildChartConfig({
-      id: 'vac',
-      title: 'Vertical Accuracy',
-      unit: 'm',
-      icon: 'tabler:ruler-measure',
-      points: locations
-        .filter(l => typeof l.vac === 'number' && l.vac > 0)
-        .map(l => ({ tst: l.tst, value: l.vac as number }))
-    }),
-    buildChartConfig({
-      id: 'p',
-      title: 'Pressure',
-      unit: 'kPa',
-      icon: 'tabler:gauge-filled',
-      points: locations
-        .filter(l => typeof l.p === 'number' && l.p > 0)
-        .map(l => ({ tst: l.tst, value: l.p as number }))
-    }),
-    buildChartConfig({
-      id: 'cog',
-      title: 'Heading',
-      unit: '°',
-      icon: 'tabler:compass',
-      points: locations
-        .filter(l => typeof l.cog === 'number')
-        .map(l => ({ tst: l.tst, value: l.cog as number })),
-      fixedDomain: [0, 360]
-    }),
-    buildChartConfig({
-      id: 'rad',
-      title: 'Radius',
-      unit: 'm',
-      icon: 'tabler:circle-dashed',
-      points: locations
-        .filter(l => typeof l.rad === 'number' && l.rad > 0)
-        .map(l => ({ tst: l.tst, value: l.rad as number }))
+        .filter(l => typeof l.batt === 'number')
+        .map(l => ({ tst: l.tst, value: l.batt as number })),
+      fixedDomain: [0, 100]
     })
   ].filter((c): c is ChartConfig => c !== null)
 
@@ -244,46 +198,46 @@ export function generateStripHTML({
         }
       </style>
     </head>
-    <body class="flex p-4 text-zinc-900 flex-col w-[384px] border-2 border-black bg-white box-border">
-      <header class="border-b-2 border-zinc-800 pb-2 mb-1 w-full flex flex-col gap-1">
+    <body class="flex p-4 text-black flex-col w-[384px] border-2 border-black bg-white box-border">
+      <header class="border-b-2 border-black pb-2 mb-1 w-full flex flex-col gap-1">
         <div class="flex items-center gap-2">
           <iconify-icon icon="tabler:map-pin" width="24" height="24" class="text-black"></iconify-icon>
           <h1 class="text-lg font-semibold tracking-wide">OwnTracks Statistics</h1>
         </div>
-        <div class="flex items-center justify-end tracking-wider font-medium text-xs gap-1 text-zinc-500">
+        <div class="flex items-center justify-end tracking-wider font-medium text-xs gap-1 text-black">
           <span>powered by</span>
           <iconify-icon icon="tabler:hammer" width="16" height="16" class="text-black"></iconify-icon>
-          <span class="text-zinc-800">Lifeforge<span class="text-black">.</span></span>
+          <span class="text-black font-semibold">Lifeforge<span>.</span></span>
         </div>
       </header>
 
       <div class="flex-1 w-full space-y-2 mt-4">
         <!-- Main Primary Card (Total Distance) -->
-        <div class="bg-black w-full p-2 flex items-center justify-between rounded-sm text-white">
+        <div class="bg-black border-2 border-black w-full p-2 flex items-center justify-between rounded-sm text-white">
           <div class="flex items-center gap-2 font-medium">
             <iconify-icon icon="tabler:trending-up" width="24" height="24"></iconify-icon>
             Total Distance
           </div>
           <div>
-            <span class="text-2xl font-semibold tracking-wider">${totalDistKm}<span class="text-zinc-300 text-xl ml-1">km</span></span>
+            <span class="text-2xl font-semibold tracking-wider">${totalDistKm}<span class="text-white text-xl ml-1">km</span></span>
           </div>
         </div>
 
         <!-- Secondary Outlined Card (Total Points) -->
-        <div class="bg-zinc-100 border-black border-2 text-black w-full p-2 flex items-center justify-between rounded-sm">
+        <div class="bg-white border-2 border-black text-black w-full p-2 flex items-center justify-between rounded-sm">
           <div class="flex items-center gap-2 font-medium">
             <iconify-icon icon="tabler:map-pin" width="24" height="24"></iconify-icon>
             Location Updates
           </div>
           <div>
-            <span class="text-2xl font-semibold tracking-wider">${totalPoints}<span class="text-zinc-600 text-xl ml-1">pts</span></span>
+            <span class="text-2xl font-semibold tracking-wider">${totalPoints}<span class="text-black text-xl ml-1">pts</span></span>
           </div>
         </div>
 
-        <!-- Two cards in a row (Start Time & End Time) with 2 rows: icon + title on top, value centered on bottom -->
+        <!-- Two cards in a row (Start Time & End Time) -->
         <div class="flex items-center gap-2">
-          <div class="bg-zinc-100 w-full p-2 flex flex-col items-center justify-center rounded-sm">
-            <div class="flex items-center text-zinc-600 gap-1.5 font-medium text-xs">
+          <div class="bg-white border-2 border-black text-black w-full p-2 flex flex-col items-center justify-center rounded-sm">
+            <div class="flex items-center gap-1.5 font-medium text-xs text-black">
               <iconify-icon icon="tabler:clock" width="16" height="16"></iconify-icon>
               <span>Start Time</span>
             </div>
@@ -291,8 +245,8 @@ export function generateStripHTML({
               <span class="text-xl font-semibold tracking-wider">${startTime}</span>
             </div>
           </div>
-          <div class="bg-zinc-100 w-full p-2 flex flex-col items-center justify-center rounded-sm">
-            <div class="flex items-center text-zinc-600 gap-1.5 font-medium text-xs">
+          <div class="bg-white border-2 border-black text-black w-full p-2 flex flex-col items-center justify-center rounded-sm">
+            <div class="flex items-center gap-1.5 font-medium text-xs text-black">
               <iconify-icon icon="tabler:clock" width="16" height="16"></iconify-icon>
               <span>End Time</span>
             </div>
@@ -303,8 +257,8 @@ export function generateStripHTML({
         </div>
 
         <!-- Date banner card -->
-        <div class="bg-zinc-100 w-full p-2 flex items-center justify-between rounded-sm">
-          <div class="flex items-center text-zinc-600 gap-2 font-medium text-xs">
+        <div class="bg-white border-2 border-black text-black w-full p-2 flex items-center justify-between rounded-sm">
+          <div class="flex items-center gap-2 font-medium text-xs text-black">
             <iconify-icon icon="tabler:calendar" width="20" height="20"></iconify-icon>
             Report Date
           </div>
@@ -314,12 +268,12 @@ export function generateStripHTML({
         </div>
 
         <!-- Map Section (Top) -->
-        <div class="w-full border-2 border-black rounded-sm overflow-hidden mt-3">
+        <div class="w-full border-2 border-black rounded-sm overflow-hidden mt-3 bg-white">
           <div class="bg-black text-white px-2.5 py-1.5 flex items-center gap-2 text-xs font-medium">
             <iconify-icon icon="tabler:route" width="18" height="18"></iconify-icon>
             Route Map
           </div>
-          <div id="map-container" class="w-full h-[220px] bg-zinc-100 [&_.leaflet-tile-pane]:grayscale [&_.leaflet-tile-pane]:contrast-125 [&_.leaflet-tile-pane]:brightness-105"></div>
+          <div id="map-container" class="w-full h-[220px] bg-white [&_.leaflet-tile-pane]:grayscale [&_.leaflet-tile-pane]:contrast-125 [&_.leaflet-tile-pane]:brightness-105"></div>
         </div>
 
         <!-- Graphs Section (Bottom) with Chart.js -->
@@ -327,17 +281,17 @@ export function generateStripHTML({
           ${charts
             .map(
               c => `
-            <div class="bg-zinc-100 w-full p-2 rounded-sm border border-zinc-300">
+            <div class="bg-white w-full p-2 rounded-sm border-2 border-black">
               <div class="flex items-center justify-between mb-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-medium text-zinc-900">
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-black">
                   <iconify-icon icon="${c.icon}" width="16" height="16"></iconify-icon>
                   <span>${c.title}</span>
                 </div>
-                <div class="text-[11px] font-mono text-zinc-600">
-                  Avg: <span class="font-semibold text-zinc-900">${c.avgVal}${c.unit}</span> &bull; Max: <span class="font-semibold text-zinc-900">${c.maxValStr}${c.unit}</span>
+                <div class="text-[11px] font-mono text-black">
+                  Avg: <span class="font-bold">${c.avgVal}${c.unit}</span> &bull; Max: <span class="font-bold">${c.maxValStr}${c.unit}</span>
                 </div>
               </div>
-              <div class="w-full h-[90px] bg-white border border-black rounded-xs p-1">
+              <div class="w-full h-[90px] bg-white border border-black p-1">
                 <canvas id="chart-${c.id}"></canvas>
               </div>
             </div>
@@ -347,8 +301,8 @@ export function generateStripHTML({
         </div>
       </div>
 
-      <div class="border-t-2 mt-4 border-zinc-800 flex items-center justify-center p-2 text-xs">
-        <p class="text-zinc-500">[Computer Generated Report]</p>
+      <div class="border-t-2 mt-4 border-black flex items-center justify-center p-2 text-xs">
+        <p class="text-black font-medium">[Computer Generated Report]</p>
       </div>
 
       <script>
@@ -409,7 +363,7 @@ export function generateStripHTML({
                   borderColor: '#000000',
                   borderWidth: 1.5,
                   fill: true,
-                  backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.06)',
                   tension: 0.2,
                   pointRadius: 0
                 }]
@@ -426,7 +380,7 @@ export function generateStripHTML({
                   x: {
                     grid: { display: false },
                     ticks: {
-                      color: '#52525b',
+                      color: '#000000',
                       font: { size: 9, family: 'monospace' },
                       maxTicksLimit: 5,
                       autoSkip: true
@@ -440,7 +394,7 @@ export function generateStripHTML({
                       borderDash: [3, 3]
                     },
                     ticks: {
-                      color: '#52525b',
+                      color: '#000000',
                       font: { size: 9, family: 'monospace' },
                       maxTicksLimit: 4
                     }
