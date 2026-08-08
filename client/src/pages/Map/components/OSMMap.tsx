@@ -1,24 +1,16 @@
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useRef } from 'react'
 
-import { type InferOutput } from '@lifeforge/api'
-import { Box, usePersonalization } from '@lifeforge/ui'
+import { Box, Widget, WithQuery, usePersonalization } from '@lifeforge/ui'
 
 import { forgeAPI } from '@/manifest'
+import { useMapPageContext } from '@/pages/Map/contexts/MapPageProvider'
 
-type LocationRecord = InferOutput<typeof forgeAPI.locations.listCoords>[number]
-
-function OSMMap({
-  apiKey,
-  locations,
-  currentLocation
-}: {
-  apiKey: string | null
-  locations: LocationRecord[]
-  currentLocation: LocationRecord | null
-}) {
+function OSMMap({ apiKey }: { apiKey: string }) {
+  const { locations, currentLocation } = useMapPageContext()
   const { derivedTheme, derivedThemeColor } = usePersonalization()
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
@@ -171,4 +163,16 @@ function OSMMap({
   )
 }
 
-export default OSMMap
+export default function OSMapWithAPIKey() {
+  const tracestrackKeyQuery = useQuery(
+    forgeAPI.getAPIKeys({ keyId: 'tracestrack' }).queryOptions({ retry: false })
+  )
+
+  return (
+    <Widget flex="1" icon="tabler:route" minHeight="0" title="Route">
+      <WithQuery query={tracestrackKeyQuery} showRetryButton={false}>
+        {apiKey => <OSMMap apiKey={apiKey} />}
+      </WithQuery>
+    </Widget>
+  )
+}
