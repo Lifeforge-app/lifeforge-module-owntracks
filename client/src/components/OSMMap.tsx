@@ -136,7 +136,7 @@ function OSMMapInner({ apiKey }: { apiKey: string }) {
   return (
     <Box
       ref={containerRef}
-      aspectRatio="24/9"
+      aspectRatio={{ base: '1/1', sm: '24/9' }}
       flex="1"
       flexShrink="0"
       minHeight="0"
