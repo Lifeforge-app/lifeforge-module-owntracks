@@ -12,13 +12,7 @@ import {
 } from 'recharts'
 
 import { type InferOutput } from '@lifeforge/api'
-import {
-  Box,
-  Card,
-  Text,
-  Widget,
-  usePersonalization
-} from '@lifeforge/ui'
+import { Box, Card, Text, Widget, usePersonalization } from '@lifeforge/ui'
 
 import { useMapPageContext } from '@/contexts/MapPageProvider'
 import { forgeAPI } from '@/manifest'
@@ -70,7 +64,10 @@ export function TelemetryWidget({
   icon: string
   dataKey: keyof LocationRecord
   unit: string
-  domain?: [number | 'auto' | 'dataMin' | 'dataMax', number | 'auto' | 'dataMin' | 'dataMax']
+  domain?: [
+    number | 'auto' | 'dataMin' | 'dataMax',
+    number | 'auto' | 'dataMin' | 'dataMax'
+  ]
   formatter?: (value: number) => string
   filterPredicate?: (value: number) => boolean
 }) {
@@ -81,8 +78,10 @@ export function TelemetryWidget({
     return locations
       .filter(location => {
         const val = location[dataKey]
+
         if (typeof val !== 'number') return false
         if (filterPredicate) return filterPredicate(val)
+
         return true
       })
       .map(location => ({
@@ -106,12 +105,7 @@ export function TelemetryWidget({
   }
 
   return (
-    <Widget
-      height="20rem"
-      icon={icon}
-      title={title}
-      width="100%"
-    >
+    <Widget height="20rem" icon={icon} title={title} width="100%">
       <Box flex="1" minHeight="0" width="100%">
         <ResponsiveContainer height="100%" width="100%">
           <LineChart data={chartData}>
