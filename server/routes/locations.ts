@@ -1,17 +1,38 @@
+import { and, asc, gte, lte } from 'drizzle-orm'
+import { createSelectSchema } from 'drizzle-orm/zod'
 import dayjs from 'dayjs'
 import puppeteer from 'puppeteer-core'
 import z from 'zod'
 
 import forge from '../forge'
-import schema from '../schema'
+import { owntracksLocations } from '../schema.drizzle'
 import { generateStripHTML } from '../utils/generateStripHTML'
 
-const LocationMessageSchema = schema.locations
+const locationDto = createSelectSchema(owntracksLocations).extend({
+  inregions: z.array(z.string()),
+  inrids: z.array(z.string()),
+  motionactivities: z.array(z.string())
+})
+
+const trackInput = locationDto
+  .omit({
+    id: true,
+    type: true,
+    created: true,
+    updated: true,
+    bssid: true,
+    ssid: true
+  })
+  .extend({
+    _type: z.string(),
+    _id: z.string(),
+    SSID: z.string(),
+    BSSID: z.string()
+  })
+  .partial()
 
 export const list = forge
   .query({
-    encrypted: false,
-    noAuth: true,
     description:
       'Get recorded location coordinates and telemetry for a given date',
     input: {
@@ -20,29 +41,27 @@ export const list = forge
       })
     },
     output: {
-      OK: z.array(schema.locations)
+      OK: z.array(locationDto)
     }
   })
-  .callback(async ({ pb, query: { date }, response }) =>
-    response.ok(
-      await pb.getFullList
-        .collection('locations')
-        .filter([
-          {
-            field: 'tst',
-            operator: '>=',
-            value: dayjs(date).startOf('day').unix()
-          },
-          {
-            field: 'tst',
-            operator: '<=',
-            value: dayjs(date).endOf('day').unix()
-          }
-        ])
-        .sort(['tst'])
-        .execute()
-    )
-  )
+  .callback(async ({ db, query: { date }, response }) => {
+    const start = dayjs(date).startOf('day').unix()
+
+    const end = dayjs(date).endOf('day').unix()
+
+    const rows = await db
+      .select()
+      .from(owntracksLocations)
+      .where(
+        and(
+          gte(owntracksLocations.tst, start),
+          lte(owntracksLocations.tst, end)
+        )
+      )
+      .orderBy(asc(owntracksLocations.tst))
+
+    return response.ok(rows)
+  })
 
 export const image = forge
   .query({
@@ -58,25 +77,23 @@ export const image = forge
     },
     output: 'custom'
   })
-  .callback(async ({ pb, query: { date }, res }) => {
+  .callback(async ({ db, query: { date }, res }) => {
     const selectedDate = date || dayjs().format('YYYY-MM-DD')
 
-    const locations = await pb.getFullList
-      .collection('locations')
-      .filter([
-        {
-          field: 'tst',
-          operator: '>=',
-          value: dayjs(selectedDate).startOf('day').unix()
-        },
-        {
-          field: 'tst',
-          operator: '<=',
-          value: dayjs(selectedDate).endOf('day').unix()
-        }
-      ])
-      .sort(['tst'])
-      .execute()
+    const start = dayjs(selectedDate).startOf('day').unix()
+
+    const end = dayjs(selectedDate).endOf('day').unix()
+
+    const locations = await db
+      .select()
+      .from(owntracksLocations)
+      .where(
+        and(
+          gte(owntracksLocations.tst, start),
+          lte(owntracksLocations.tst, end)
+        )
+      )
+      .orderBy(asc(owntracksLocations.tst))
 
     const html = generateStripHTML({ date: selectedDate, locations })
 
@@ -128,68 +145,49 @@ export const track = forge
       'Receive an OwnTracks message. Location updates are recorded; all other message types are acknowledged and discarded.',
     rateLimit: false,
     input: {
-      body: LocationMessageSchema.omit({
-        id: true,
-        type: true,
-        collectionId: true,
-        collectionName: true,
-        created: true,
-        updated: true,
-        bssid: true,
-        ssid: true
-      })
-        .extend({
-          _type: z.string(),
-          _id: z.string(),
-          SSID: z.string(),
-          BSSID: z.string()
-        })
-        .partial()
+      body: trackInput
     },
     output: 'custom'
   })
-  .callback(async ({ pb, body, res }) => {
+  .callback(async ({ db, body, res }) => {
     if (body._type !== 'location') {
       return res.json([])
     }
 
-    await pb.create
-      .collection('locations')
-      .data({
-        type: body._type,
-        message_id: body._id,
-        topic: body.topic,
-        qos: body.qos,
-        retained: body.retained,
-        created_at: body.created_at,
-        source: body.source,
-        batt: body.batt,
-        bs: body.bs,
-        acc: body.acc,
-        vac: body.vac,
-        lat: body.lat,
-        lon: body.lon,
-        alt: body.alt,
-        cog: body.cog,
-        rad: body.rad,
-        vel: body.vel,
-        p: body.p,
-        t: body.t,
-        tst: body.tst,
-        m: body.m,
-        conn: body.conn,
-        poi: body.poi,
-        image: body.image,
-        imagename: body.imagename,
-        tag: body.tag,
-        inregions: body.inregions,
-        inrids: body.inrids,
-        motionactivities: body.motionactivities,
-        bssid: body.BSSID,
-        ssid: body.SSID,
-        tid: body.tid
-      })
-      .execute()
+    await db.insert(owntracksLocations).values({
+      type: body._type,
+      message_id: body._id,
+      topic: body.topic,
+      qos: body.qos,
+      retained: body.retained,
+      created_at: body.created_at,
+      source: body.source,
+      batt: body.batt,
+      bs: body.bs,
+      acc: body.acc,
+      vac: body.vac,
+      lat: body.lat,
+      lon: body.lon,
+      alt: body.alt,
+      cog: body.cog,
+      rad: body.rad,
+      vel: body.vel,
+      p: body.p,
+      t: body.t,
+      tst: body.tst,
+      m: body.m,
+      conn: body.conn,
+      poi: body.poi,
+      image: body.image,
+      imagename: body.imagename,
+      tag: body.tag,
+      inregions: body.inregions,
+      inrids: body.inrids,
+      motionactivities: body.motionactivities,
+      bssid: body.BSSID,
+      ssid: body.SSID,
+      tid: body.tid
+    })
 
     return res.json([])
   })

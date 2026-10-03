@@ -24,8 +24,8 @@ export const contract = {
     "list": {
       "method": "get",
       "description": "Get recorded location coordinates and telemetry for a given date",
-      "noAuth": true,
-      "encrypted": false,
+      "noAuth": false,
+      "encrypted": true,
       "isDownloadable": false,
       "media": null,
       "input": {
@@ -50,6 +50,11 @@ export const contract = {
           "items": {
             "type": "object",
             "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
               "type": {
                 "type": "string"
               },
@@ -60,58 +65,88 @@ export const contract = {
                 "type": "string"
               },
               "qos": {
-                "type": "number"
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
               },
               "retained": {
                 "type": "boolean"
               },
               "created_at": {
-                "type": "number"
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
               },
               "source": {
                 "type": "string"
               },
               "batt": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "bs": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "acc": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "vac": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "lat": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "lon": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "alt": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "cog": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "rad": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "vel": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "p": {
-                "type": "number"
+                "type": "number",
+                "minimum": -140737488355328,
+                "maximum": 140737488355327
               },
               "t": {
                 "type": "string"
               },
               "tst": {
-                "type": "number"
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
               },
               "m": {
-                "type": "number"
+                "type": "integer",
+                "minimum": -2147483648,
+                "maximum": 2147483647
               },
               "conn": {
                 "type": "string"
@@ -156,22 +191,16 @@ export const contract = {
                 "type": "string"
               },
               "created": {
-                "type": "string"
+                "type": "string",
+                "format": "date-time"
               },
               "updated": {
-                "type": "string"
-              },
-              "id": {
-                "type": "string"
-              },
-              "collectionId": {
-                "type": "string"
-              },
-              "collectionName": {
-                "type": "string"
+                "type": "string",
+                "format": "date-time"
               }
             },
             "required": [
+              "id",
               "type",
               "message_id",
               "topic",
@@ -205,10 +234,7 @@ export const contract = {
               "ssid",
               "tid",
               "created",
-              "updated",
-              "id",
-              "collectionId",
-              "collectionName"
+              "updated"
             ],
             "additionalProperties": false
           }
@@ -234,58 +260,88 @@ export const contract = {
               "type": "string"
             },
             "qos": {
-              "type": "number"
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
             },
             "retained": {
               "type": "boolean"
             },
             "created_at": {
-              "type": "number"
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
             },
             "source": {
               "type": "string"
             },
             "batt": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "bs": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "acc": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "vac": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "lat": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "lon": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "alt": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "cog": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "rad": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "vel": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "p": {
-              "type": "number"
+              "type": "number",
+              "minimum": -140737488355328,
+              "maximum": 140737488355327
             },
             "t": {
               "type": "string"
             },
             "tst": {
-              "type": "number"
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
             },
             "m": {
-              "type": "number"
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
             },
             "conn": {
               "type": "string"
