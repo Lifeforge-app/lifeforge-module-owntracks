@@ -30,21 +30,25 @@ type ChartConfig = {
 
 function calculateDistance(points: LocationItem[]): number {
   let totalMeters = 0
+  let previous: LocationItem | undefined
 
-  for (let i = 1; i < points.length; i++) {
-    const p1 = points[i - 1]
-    const p2 = points[i]
-    const R = 6371e3
-    const φ1 = (p1.lat * Math.PI) / 180
-    const φ2 = (p2.lat * Math.PI) / 180
-    const Δφ = ((p2.lat - p1.lat) * Math.PI) / 180
-    const Δλ = ((p2.lon - p1.lon) * Math.PI) / 180
+  for (const point of points) {
+    if (previous) {
+      const R = 6371e3
+      const φ1 = (previous.lat * Math.PI) / 180
+      const φ2 = (point.lat * Math.PI) / 180
+      const Δφ = ((point.lat - previous.lat) * Math.PI) / 180
+      const Δλ = ((point.lon - previous.lon) * Math.PI) / 180
 
-    const a =
-      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    totalMeters += R * c
+      const a =
+        Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+      totalMeters += R * c
+    }
+
+    previous = point
   }
 
   return totalMeters
@@ -94,9 +98,10 @@ export function generateStripHTML({
   locations: LocationItem[]
 }): string {
   const formattedDate = dayjs(date).format('dddd, MMMM D, YYYY')
-  const hasLocations = locations.length > 0
+  const [firstLocation] = locations
+  const lastLocation = locations[locations.length - 1]
 
-  if (!hasLocations) {
+  if (!firstLocation || !lastLocation) {
     return `
       <!DOCTYPE html>
       <html>
@@ -136,10 +141,8 @@ export function generateStripHTML({
     `
   }
 
-  const startTime = dayjs.unix(locations[0].tst).format('HH:mm:ss')
-  const endTime = dayjs
-    .unix(locations[locations.length - 1].tst)
-    .format('HH:mm:ss')
+  const startTime = dayjs.unix(firstLocation.tst).format('HH:mm:ss')
+  const endTime = dayjs.unix(lastLocation.tst).format('HH:mm:ss')
   const totalPoints = locations.length
   const totalDistMeters = calculateDistance(locations)
   const totalDistKm = (totalDistMeters / 1000).toFixed(2)

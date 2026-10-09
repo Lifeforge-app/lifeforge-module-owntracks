@@ -81,6 +81,10 @@ function OSMMapInner({ apiKey }: { apiKey: string }) {
 
     if (locations.length === 0) return
 
+    const firstLocation = locations[0]
+
+    if (!firstLocation) return
+
     const polyline = L.polyline(
       locations.map(
         location => [location.lat, location.lon] as [number, number]
@@ -94,12 +98,12 @@ function OSMMapInner({ apiKey }: { apiKey: string }) {
 
     polylineRef.current = polyline
 
-    map.setView([locations[0].lat, locations[0].lon], 16)
+    map.setView([firstLocation.lat, firstLocation.lon], 16)
 
     const timer = setTimeout(() => {
       if (!mapRef.current) return
       map.invalidateSize()
-      map.setView([locations[0].lat, locations[0].lon], 16)
+      map.setView([firstLocation.lat, firstLocation.lon], 16)
     }, 100)
 
     return () => {

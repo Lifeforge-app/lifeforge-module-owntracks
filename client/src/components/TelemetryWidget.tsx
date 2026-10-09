@@ -7,6 +7,7 @@ import {
   ReferenceDot,
   ResponsiveContainer,
   Tooltip,
+  type TooltipProps,
   XAxis,
   YAxis
 } from 'recharts'
@@ -19,36 +20,36 @@ import { forgeAPI } from '@/manifest'
 
 type LocationRecord = InferOutput<typeof forgeAPI.locations.list>[number]
 
+type TelemetryTooltipProps = Omit<TooltipProps<number, string>, 'formatter'> & {
+  unit: string
+  formatter?: (value: number) => string
+}
+
 function TelemetryTooltip({
   active,
   payload,
   label,
   unit,
   formatter
-}: {
-  active?: boolean
-  payload?: Array<{ value: number }>
-  label?: number
-  unit: string
-  formatter?: (value: number) => string
-}) {
-  if (active && payload && payload.length) {
-    const rawValue = payload[0].value
-    const displayValue = formatter ? formatter(rawValue) : `${rawValue} ${unit}`
+}: TelemetryTooltipProps) {
+  const rawValue = payload?.[0]?.value
 
-    return (
-      <Card p="md">
-        <Text color="muted" mb="xs" weight="medium">
-          {dayjs.unix(Number(label)).format('HH:mm:ss')}
-        </Text>
-        <Text size="lg" weight="semibold">
-          {displayValue}
-        </Text>
-      </Card>
-    )
+  if (!active || rawValue === undefined) {
+    return null
   }
 
-  return null
+  const displayValue = formatter ? formatter(rawValue) : `${rawValue} ${unit}`
+
+  return (
+    <Card p="md">
+      <Text color="muted" mb="xs" weight="medium">
+        {dayjs.unix(Number(label)).format('HH:mm:ss')}
+      </Text>
+      <Text size="lg" weight="semibold">
+        {displayValue}
+      </Text>
+    </Card>
+  )
 }
 
 export function TelemetryWidget({
@@ -132,13 +133,9 @@ export function TelemetryWidget({
               }
               tickLine={false}
             />
-            <Tooltip
+            <Tooltip<number, string>
               content={props => (
-                <TelemetryTooltip
-                  {...props}
-                  formatter={formatter}
-                  unit={unit}
-                />
+                <TelemetryTooltip {...props} formatter={formatter} unit={unit} />
               )}
             />
             <Line

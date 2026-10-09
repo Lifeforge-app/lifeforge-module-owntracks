@@ -37,8 +37,11 @@ export function MapPageProvider({ children }: { children: React.ReactNode }) {
 
   const locations = locationsQuery.data ?? []
 
-  const minTst = locations.length > 0 ? locations[0].tst : 0
-  const maxTst = locations.length > 0 ? locations[locations.length - 1].tst : 0
+  const firstLocation = locations[0]
+  const lastLocation = locations[locations.length - 1]
+
+  const minTst = firstLocation ? firstLocation.tst : 0
+  const maxTst = lastLocation ? lastLocation.tst : 0
 
   const sliderValue = Math.min(Math.max(selectedTime, minTst), maxTst)
 
