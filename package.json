@@ -5,6 +5,10 @@
   "type": "module",
   "author": "Melvin Chia <melvinchia623600@gmail.com>",
   "description": "Keep track of everywhere you've been.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lifeforge-app/lifeforge-module-owntracks.git"
+  },
   "scripts": {
     "typecheck": "pnpm run typecheck:client && pnpm run typecheck:server",
     "typecheck:client": "cd client && tsc",
