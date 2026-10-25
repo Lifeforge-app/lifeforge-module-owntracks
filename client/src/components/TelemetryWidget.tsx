@@ -13,7 +13,7 @@ import {
 } from 'recharts'
 
 import { type InferOutput } from '@lifeforge/api'
-import { Box, Card, Text, Widget, usePersonalization } from '@lifeforge/ui'
+import { Card, Text, Widget, usePersonalization } from '@lifeforge/ui'
 
 import { useMapPageContext } from '@/contexts/MapPageProvider'
 import { forgeAPI } from '@/manifest'
@@ -107,62 +107,60 @@ export function TelemetryWidget({
 
   return (
     <Widget height="20rem" icon={icon} title={title} width="100%">
-      <Box flex="1" minHeight="0" width="100%">
-        <ResponsiveContainer height="100%" width="100%">
-          <LineChart data={chartData}>
-            <CartesianGrid
-              stroke="rgba(156, 163, 175, 0.2)"
-              strokeDasharray="3 3"
-              vertical={false}
-            />
-            <XAxis
-              axisLine={false}
-              dataKey="tst"
-              domain={['dataMin', 'dataMax']}
-              tick={{ fill: 'currentColor' }}
-              tickFormatter={value => dayjs.unix(value).format('HH:mm')}
-              tickLine={false}
-              type="number"
-            />
-            <YAxis
-              axisLine={false}
-              domain={domain}
-              tick={{ fill: 'currentColor' }}
-              tickFormatter={value =>
-                formatter ? formatter(value) : `${value} ${unit}`
-              }
-              tickLine={false}
-            />
-            <Tooltip<number, string>
-              content={props => (
-                <TelemetryTooltip {...props} formatter={formatter} unit={unit} />
-              )}
-            />
-            <Line
-              activeDot={{
-                r: 6,
-                fill: derivedThemeColor,
-                stroke: derivedThemeColor
-              }}
-              dataKey="value"
-              dot={false}
-              stroke={derivedThemeColor}
-              strokeWidth={2}
-              type="monotone"
-            />
-            {currentPoint && (
-              <ReferenceDot
-                fill={derivedThemeColor}
-                r={6}
-                stroke="white"
-                strokeWidth={2}
-                x={currentPoint.tst}
-                y={currentPoint.value}
-              />
+      <ResponsiveContainer height="100%" width="100%">
+        <LineChart data={chartData}>
+          <CartesianGrid
+            stroke="rgba(156, 163, 175, 0.2)"
+            strokeDasharray="3 3"
+            vertical={false}
+          />
+          <XAxis
+            axisLine={false}
+            dataKey="tst"
+            domain={['dataMin', 'dataMax']}
+            tick={{ fill: 'currentColor' }}
+            tickFormatter={value => dayjs.unix(value).format('HH:mm')}
+            tickLine={false}
+            type="number"
+          />
+          <YAxis
+            axisLine={false}
+            domain={domain}
+            tick={{ fill: 'currentColor' }}
+            tickFormatter={value =>
+              formatter ? formatter(value) : `${value} ${unit}`
+            }
+            tickLine={false}
+          />
+          <Tooltip<number, string>
+            content={props => (
+              <TelemetryTooltip {...props} formatter={formatter} unit={unit} />
             )}
-          </LineChart>
-        </ResponsiveContainer>
-      </Box>
+          />
+          <Line
+            activeDot={{
+              r: 6,
+              fill: derivedThemeColor,
+              stroke: derivedThemeColor
+            }}
+            dataKey="value"
+            dot={false}
+            stroke={derivedThemeColor}
+            strokeWidth={2}
+            type="monotone"
+          />
+          {currentPoint && (
+            <ReferenceDot
+              fill={derivedThemeColor}
+              r={6}
+              stroke="white"
+              strokeWidth={2}
+              x={currentPoint.tst}
+              y={currentPoint.value}
+            />
+          )}
+        </LineChart>
+      </ResponsiveContainer>
     </Widget>
   )
 }
