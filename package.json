@@ -1,7 +1,7 @@
 {
   "name": "@lifeforge/lifeforge--owntracks",
   "displayName": "Owntracks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "author": "Melvin Chia <melvinchia623600@gmail.com>",
   "description": "Keep track of everywhere you've been.",
